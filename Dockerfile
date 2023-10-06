@@ -52,7 +52,6 @@ FROM amazoncorretto:17.0.7-alpine3.17 as publish
 # Build ARGS
 ARG UID=1000
 ARG GID=1000
-ARG OSM_FILE=./ors-api/src/test/files/heidelberg.osm.gz
 ARG BASE_FOLDER=/home/ors
 
 # Runtime ENVs for tomcat
@@ -77,8 +76,8 @@ COPY --chown=ors:ors --from=tomcat /tmp/tomcat ${BASE_FOLDER}/tomcat
 COPY --chown=ors:ors --from=build /ors-core/ors-api/target/ors.war ${BASE_FOLDER}/tomcat/webapps/ors.war
 COPY --chown=ors:ors --from=build /ors-core/ors-api/src/main/resources/log4j.properties ${BASE_FOLDER}/tomcat/conf/logging.properties
 COPY --chown=ors:ors ./docker-entrypoint.sh ${BASE_FOLDER}/docker-entrypoint.sh
-COPY --chown=ors:ors ./ors-api/ors-config.yml ${BASE_FOLDER}/tmp/ors-config.yml
-COPY --chown=ors:ors ./$OSM_FILE ${BASE_FOLDER}/tmp/osm_file.pbf
+COPY --chown=ors:ors ./ors-api/ors-config.yml ${BASE_FOLDER}/ors-core/ors-config.yml
+COPY --chown=ors:ors $OSM_FILE ${BASE_FOLDER}/tmp/osm_file.pbf
 
 USER ${UID}:${GID}
 
